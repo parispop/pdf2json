@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import fitz  # PyMuPDF for PDFs
 import docx  # For Word documents
+import PdfReader
 
 app = Flask(__name__)
 
@@ -11,6 +12,17 @@ def extract_pdf_text(pdf_file):
     for page in doc:
         text += page.get_text()
     return text
+
+
+
+def extract_text_from_pdf(file_path):
+    with open(file_path, 'rb') as file:
+        pdf_reader = PdfReader(file)
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+    return text
+
 
 # Extract text from Word document
 def extract_word_text(word_file):
@@ -26,7 +38,7 @@ def extract_content():
     filename = file.filename
 
     if filename.endswith('.pdf'):
-        content = extract_pdf_text(file)
+        content = extract_text_from_pdf(file)
     elif filename.endswith('.docx'):
         content = extract_word_text(file)
     else:
