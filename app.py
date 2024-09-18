@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import fitz  # PyMuPDF for PDFs
 import docx  # For Word documents
-import PdfReader
+from PyPDF2 import PdfReader
 
 app = Flask(__name__)
 
